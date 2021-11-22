@@ -1,0 +1,38 @@
+{
+    "name": "d-scribe/laravel-db-command",
+    "type": "library",
+    "description": "A laravel command for database operations",
+    "license": "MIT",
+    "keywords": [
+        "laravel",
+        "database",
+        "db",
+        "command",
+        "script"
+    ],
+    "authors": [
+        {
+            "name": "Ezra Obiwale",
+            "email": "contact@ezraobiwale.com",
+            "homepage": "http://ezraobiwale.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "DScribe\\ServiceProvider"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "DScribe\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
