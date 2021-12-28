@@ -46,7 +46,6 @@ class Database extends Command
         $where = $this->option('where');
         $whereNull = $this->option('where-null');
         $whereNotNull = $this->option('where-not-null');
-        $data = $this->option('data');
 
         $table = DB::table($tableName);
 
@@ -86,7 +85,7 @@ class Database extends Command
     private function create(Builder $table)
     {
         try {
-            $data = $this->prepData($this->option('data'));
+            $data = $this->prepData();
 
             $result = $table->insert($data);
 
@@ -110,7 +109,7 @@ class Database extends Command
     private function update(Builder $table)
     {
         try {
-            $data = $this->prepData($this->option('data'));
+            $data = $this->prepData();
 
             $result = $table->update($data);
 
@@ -154,8 +153,10 @@ class Database extends Command
         return $where;
     }
 
-    private function prepData($data)
+    private function prepData()
     {
+        $data = $this->option('data');
+
         if (empty($data)) {
             throw new Exception('Empty data found. Please use option --data');
         }
@@ -196,8 +197,8 @@ class Database extends Command
 
             $this->info('Result:');
 
-            $h = $action == 'get' ? $result[0] : $result;
-            $headers = array_keys((array) $h);
+            $item = $this->option('read') ? $result[0] : $result;
+            $headers = array_keys((array) $item);
 
             $this->table($headers, $result);
         } else {
