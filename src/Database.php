@@ -21,7 +21,8 @@ class Database extends Command
                                 { --where-null= : A comma-separated list of columns that must be null }
                                 { --where-not-null= : A comma-separated list of columns that must not be null }
                                 { --data= : A comma-separated list of <column>:<value> }
-                                { --fields= : A comma-separated list of fields to retrieve }
+                                { --fields= : An alias for --select }
+                                { --select= : A comma-separated list of columns to retrieve }
                                 { --c|create : Indicates to perform a create operation }
                                 { --r|read : Indicates to perform a read operation. This is default }
                                 { --u|update : Indicates to perform an update operation }
@@ -99,7 +100,7 @@ class Database extends Command
 
     private function read(Builder $table)
     {
-        $fields = $this->option('fields');
+        $fields = $this->option('select') ?? $this->option('fields') ?? '*';
 
         $result = $table->get($fields ? explode(',', trim($fields)) : null);
 
@@ -197,7 +198,7 @@ class Database extends Command
 
             $this->info('Result:');
 
-            $item = $this->option('read') ? $result[0] : $result;
+            $item = $this->isReading() ? $result[0] : $result;
             $headers = array_keys((array) $item);
 
             $this->table($headers, $result);
@@ -206,5 +207,10 @@ class Database extends Command
         }
 
         return 0;
+    }
+
+    private function isReading()
+    {
+        return $this->option('read') || !($this->option('create') || $this->option('update') || $this->option('delete'));
     }
 }
